@@ -4,6 +4,10 @@ import java.io.File;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class RegistrationFromPage {
     public void typeFirstName(String firstname) {
@@ -34,9 +38,10 @@ public class RegistrationFromPage {
     }
 
     public void chooseSubject(String subject) {
-        $("#subjectsContainer").click();
-        $("#subjectsInput").sendKeys(subject);
-        $(byText(subject)).click();
+        //$("#subjectsContainer").click();
+        $("#subjectsInput").setValue(subject).pressEnter();
+        //$(byText(subject)).click();
+
     }
 
     public void choseHobby(String hobby) {
@@ -58,7 +63,7 @@ public class RegistrationFromPage {
 
     public void setCity(String city) {
         $("#city").click();
-        $(byText("Panipat")).click();
+        $(byText(city)).click();
     }
 
     public void clickSubmit() {

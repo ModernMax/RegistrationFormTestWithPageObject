@@ -82,7 +82,7 @@ public class RandomUtils {
     }
 
     public static String getRandomPhone() {
-        return RandomStringUtils.randomNumeric(8);
+        return RandomStringUtils.randomNumeric(10);
     }
 
 

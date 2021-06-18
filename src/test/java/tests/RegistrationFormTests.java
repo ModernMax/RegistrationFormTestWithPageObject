@@ -6,7 +6,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pages.RegistrationFromPage;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.open;
+import static utils.RandomUtils.*;
 
 public class RegistrationFormTests {
 
@@ -14,19 +17,19 @@ public class RegistrationFormTests {
     Faker faker = new Faker();
 
     String firstName = faker.name().firstName(),
-            lastname = faker.name().lastName(),
-            email = "modern@max.com",
-            gender = utils.RandomUtils.getRandomGender(),
-            phone = faker.phoneNumber().cellPhone(),
-            year = "1990",
-            month = "November",
-            day = "08",
-            subject = utils.RandomUtils.getRandomSubject(),
-            hobby = utils.RandomUtils.getRandomHobby(),
+            lastName = faker.name().lastName(),
+            email = faker.internet().emailAddress(),
+            gender = getRandomGender(),
+            phone = getRandomPhone(),
+            year = getRandomYear(),
+            month = getRandomMonth(),
+            day = getRandomDay(),
+            subject = getRandomSubject(),
+            hobby = getRandomHobby(),
             picture = "picture_1.png",
             address = faker.address().fullAddress(),
-            state = "Haryana",
-            city = "Panipat";
+            state = getRandomState(),
+            city = getRandomCity(state);
 
     RegistrationFromPage registrationFromPage = new RegistrationFromPage();
 
@@ -40,7 +43,7 @@ public class RegistrationFormTests {
     void fillRegistrationForm() {
         open("https://demoqa.com/automation-practice-form");
         registrationFromPage.typeFirstName(firstName);
-        registrationFromPage.typeLastName(lastname);
+        registrationFromPage.typeLastName(lastName);
         registrationFromPage.typeEmail(email);
         registrationFromPage.chooseGender(gender);
         registrationFromPage.typePhone(phone);
@@ -52,6 +55,18 @@ public class RegistrationFormTests {
         registrationFromPage.setState(state);
         registrationFromPage.setCity(city);
         registrationFromPage.clickSubmit();
+
+        $x("//td[text()='Student Name']").parent().shouldHave(text(firstName + " " + lastName));
+        $x("//td[text()='Student Email']").parent().shouldHave(text(email));
+        $x("//td[text()='Gender']").parent().shouldHave(text(gender));
+        $x("//td[text()='Mobile']").parent().shouldHave(text(phone));
+        $x("//td[text()='Date of Birth']").parent().shouldHave(text(day + " " + month + "," + year));
+        $x("//td[text()='Subjects']").parent().shouldHave(text(subject));
+        $x("//td[text()='Hobbies']").parent().shouldHave(text(hobby));
+        $x("//td[text()='Picture']").parent().shouldHave(text(picture));
+        $x("//td[text()='Address']").parent().shouldHave(text(address));
+        $x("//td[text()='State and City']").parent().shouldHave(text(state + " " + city));
     }
 
 }
+
